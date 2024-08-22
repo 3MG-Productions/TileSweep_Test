@@ -15,6 +15,7 @@ public class CollectionSystem : MonoBehaviour
 
     [SerializeField] private float moveDuration = 0.2f;
     [SerializeField] private Vector3 rotationOffset = new Vector3(180, 0, 0);
+    [SerializeField] private Transform VanishingPoint;
 
     void Awake()
     {
@@ -52,12 +53,13 @@ public class CollectionSystem : MonoBehaviour
 
                     Card cardToMove = cardSpawner.Card;
 
-                    cardToMove.transform.DOMove(vacantPoint.transform.position, moveDuration);
-
-                    yield return new WaitForSeconds(moveDuration + 0.1f);
-
                     cardSpawner.Card = null;
                     vacantPoint.Card = cardToMove;
+
+                    cardToMove.transform.DOMove(vacantPoint.transform.position, moveDuration);
+                    cardToMove.transform.DORotate(cardToMove.transform.eulerAngles + rotationOffset, moveDuration);
+
+                    yield return new WaitForSeconds(moveDuration + 0.1f);
 
                     cardToMove.transform.SetParent(vacantPoint.transform);
 
@@ -145,10 +147,50 @@ public class CollectionSystem : MonoBehaviour
             }
         }
 
-        RemoveMatchedCards();
+        yield return StartCoroutine(SortCollectionPoints());
+
+        StartCoroutine(RemoveMatchedCards());
     }
 
-    private void RemoveMatchedCards()
+    private IEnumerator SortCollectionPoints()
+    {
+        List<Card> availableCards = new List<Card>();
+
+        foreach (CollectionPoint cp in collectionPoints)
+        {
+            if(cp.Card!= null)
+            {
+                availableCards.Add(cp.Card);
+            }
+        }
+
+        if(availableCards.Count == 0)
+        {
+            yield return null;
+        }
+
+        availableCards.Sort((a, b) => b.CardType.CompareTo(a.CardType));
+
+        for(int i = 0; i < collectionPoints.Count; i++)
+        {
+            if(i < availableCards.Count)
+            {
+                collectionPoints[i].Card = availableCards[i];
+
+                collectionPoints[i].Card.transform.SetParent(collectionPoints[i].transform);
+
+                collectionPoints[i].Card.transform.DOLocalMove(Vector3.zero, moveDuration);
+            }
+            else
+            {
+                collectionPoints[i].Card = null;
+            }
+        }
+
+        yield return new WaitForSeconds(moveDuration + 0.2f);
+    }
+
+    private IEnumerator RemoveMatchedCards()
     {
         bool isMatchFound = false;
 
@@ -192,11 +234,18 @@ public class CollectionSystem : MonoBehaviour
                     deletedCount++;
                     Ccard.Point.Card = null;
 
+                    card.transform.DOMove(VanishingPoint.position + Vector3.up * card.CardHeight * deletedCount * 2, moveDuration);
+                    card.transform.DORotate(card.transform.eulerAngles + rotationOffset, moveDuration);
+
+                    yield return new WaitForSeconds(moveDuration/3 + 0.1f);
+
                     if(deletedCount == 3)
                     {
                         break;
                     }
                 }
+
+                yield return new WaitForSeconds(moveDuration + 0.1f);
 
                 for(int i = cardsToRemove.Count - 1; i >= 0; i--)
                 {
@@ -209,6 +258,8 @@ public class CollectionSystem : MonoBehaviour
                 break;
             }
         }
+
+        yield return StartCoroutine(SortCollectionPoints());
 
         if(isMatchFound)
         {

@@ -57,6 +57,8 @@ public class LevelSpawner : Singleton<LevelSpawner>
 
         if (cardsCollection.Count > 0)
         {
+            Utilities.Shuffle(cardsCollection);
+
             card = cardsCollection[index];
             cardsCollection.Remove(card);
         }
