@@ -3,16 +3,18 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    public Card[] Cards;
+    public List<Card> Cards;
 
     public void Init(List<Card> cards)
     {
-        Cards = cards.ToArray();
+        Cards = cards;
 
         Vector3 position = Vector3.zero;
 
         foreach (Card card in cards)
         {
+            card.gameObject.SetActive(true);
+
             card.transform.SetParent(transform);
 
             card.transform.localPosition = position;

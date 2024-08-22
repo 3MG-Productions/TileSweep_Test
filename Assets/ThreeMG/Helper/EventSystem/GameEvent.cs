@@ -1,4 +1,4 @@
 public enum GameEvent
 {
-    EVENT_EXAMPLE,
+    EVENT_LEVEL_SPAWNED,
 }

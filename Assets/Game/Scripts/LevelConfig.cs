@@ -10,5 +10,6 @@ public class LevelConfig : ScriptableObject
     public int MatchCount;
     public int SpawnCount;
     public bool IsSpawnIndependent;
+    public int CardsMultiplier;
     public List<CardSpawnConfig> Cards;
 }

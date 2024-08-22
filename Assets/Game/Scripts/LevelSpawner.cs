@@ -7,12 +7,36 @@ using UnityEngine;
 
 public class LevelSpawner : Singleton<LevelSpawner>
 {
-    [InlineEditor]
+    [InlineEditor, PropertyOrder(999)]
     [SerializeField] private LevelConfig currentLevelConfig;
+    public LevelConfig CurrentLevelConfig => currentLevelConfig;
     [SerializeField] private string tag_cards;
+
+    [BoxGroup("Spawner")]
+    [SerializeField] private CardSpawner cardSpawnerPrefab;
+    [BoxGroup("Spawner")]
+    [SerializeField] private Vector3 spawnPosition;
+    [BoxGroup("Spawner")]
+    [SerializeField] private float spawnOffset;
+    [BoxGroup("Spawner")]
+    public List<CardSpawner> spawnPoints { get; private set; }
+
+    [BoxGroup("Collection Point")]
+    [SerializeField] private CollectionPoint collectionPointPrefab;
+    [BoxGroup("Collection Point")]
+    [SerializeField] private Vector3 collectionPosition;
+    [BoxGroup("Collection Point")]
+    [SerializeField] private float collectionOffset;
+    [BoxGroup("Collection Point")]
+    public List<CollectionPoint> collectionPoints { get; private set; }
+    public Deck[][] decks;
+
+    private List<Card> cardsCollection;
 
     private void Start()
     {
+        cardsCollection = new List<Card>();
+
         SpawnLevel();
     }
 
@@ -22,29 +46,87 @@ public class LevelSpawner : Singleton<LevelSpawner>
         SpawnLevel(currentLevelConfig);
     }
 
-    private void SpawnLevel(LevelConfig levelConfig)
+    public Card PopCardFromRemaining(int index = 0)
     {
-        List<Card> cardsCollection = new List<Card>();
+        Card card = null;
 
-        for (int i = 0; i < levelConfig.Cards.Count; i++)
+        if (cardsCollection.Count > 0)
         {
-            CardTypes cardType = (CardTypes)i;
-            Material material = levelConfig.Cards[i].Color;
-
-            for (int j = 0; j < levelConfig.SpawnCount; j++)
-            {
-                GameObject cardGO = ObjectPooler.Instance.SpawnFromPool(tag_cards, Vector3.zero, Quaternion.identity);
-                Card card = cardGO.GetComponent<Card>();
-                card.Init(cardType, material);
-
-                cardsCollection.Add(card);
-            }
+            card = cardsCollection[index];
+            cardsCollection.Remove(card);
         }
 
-        Deck[][] decks = CreateDecks();
+        return card;
+    }
 
-        // shuffle cards and distribute them to decks
+    private void SpawnLevel(LevelConfig levelConfig)
+    {
+        SpawnCards(levelConfig, cardsCollection);
+
         cardsCollection = Utilities.Shuffle(cardsCollection);
+
+        decks = AssignCardsToDecks(levelConfig, cardsCollection);
+
+        SpawnSpawners(levelConfig);
+
+        SpawnCollectionPoints(levelConfig);
+
+        EventController.TriggerEvent(GameEvent.EVENT_LEVEL_SPAWNED, null);
+    }
+
+    private void SpawnSpawners(LevelConfig levelConfig)
+    {
+        Vector3 pos = spawnPosition;
+
+        pos.x = -(levelConfig.SpawnCount * spawnOffset) / 2 + spawnOffset / 2;
+
+        spawnPoints = new List<CardSpawner>();
+
+        for(int i = 0; i < levelConfig.SpawnCount; i++)
+        {
+            GameObject spawner = Instantiate(cardSpawnerPrefab.gameObject, Vector3.zero, Quaternion.identity, transform);
+
+            spawner.name = $"Spawner_{i}";
+
+            spawner.transform.position = pos;
+
+            pos.x += spawnOffset;
+
+            CardSpawner cardSpawner = spawner.GetComponent<CardSpawner>();
+
+            cardSpawner.SpawnNew();
+
+            spawnPoints.Add(cardSpawner);
+        }
+    }
+
+    private void SpawnCollectionPoints(LevelConfig levelConfig)
+    {
+        collectionPoints = new List<CollectionPoint>();
+
+        Vector3 pos = collectionPosition;
+
+        pos.x = -(levelConfig.CollectionTilesCount * collectionOffset) / 2 + collectionOffset / 2;
+
+        for (int i = 0; i < levelConfig.CollectionTilesCount; i++)
+        {
+            GameObject collectionPoint = Instantiate(collectionPointPrefab.gameObject, Vector3.zero, Quaternion.identity, transform);
+
+            collectionPoint.name = $"CollectionPoint_{i}";
+
+            collectionPoint.transform.position = pos;
+
+            pos.x += collectionOffset;
+
+            CollectionPoint collecter = collectionPoint.GetComponent<CollectionPoint>();
+
+            collectionPoints.Add(collecter);
+        }
+    }
+
+    private Deck[][] AssignCardsToDecks(LevelConfig levelConfig, List<Card> cardsCollection)
+    {
+        Deck[][] decks = CreateDecks();
 
         for (int i = 0; i < decks.GetLength(0); i++)
         {
@@ -58,8 +140,8 @@ public class LevelSpawner : Singleton<LevelSpawner>
                 {
                     if (cardsCollection.Count > 0)
                     {
-                        cardsToAdd.Add(cardsCollection[0]);
-                        cardsCollection.RemoveAt(0);
+                        Card card = PopCardFromRemaining();
+                        cardsToAdd.Add(card);
                     }
                 }
 
@@ -67,9 +149,28 @@ public class LevelSpawner : Singleton<LevelSpawner>
             }
         }
 
-        foreach (Card card in cardsCollection)
+        return decks;
+    }
+
+    private void SpawnCards(LevelConfig levelConfig, List<Card> cardsCollection)
+    {
+        for (int i = 0; i < levelConfig.Cards.Count; i++)
         {
-            card.gameObject.SetActive(false);            
+            CardTypes cardType = (CardTypes)i;
+            Material material = levelConfig.Cards[i].Color;
+
+            for (int j = 0; j < levelConfig.CardsMultiplier; j++)
+            {
+                GameObject cardGO = ObjectPooler.Instance.SpawnFromPool(tag_cards, Vector3.zero, Quaternion.identity);
+                Card card = cardGO.GetComponent<Card>();
+                card.Init(cardType, material);
+
+                card.name = $"Card_{cardType}({i})";
+
+                card.gameObject.SetActive(false);
+
+                cardsCollection.Add(card);
+            }
         }
     }
 
@@ -91,4 +192,9 @@ public class LevelSpawner : Singleton<LevelSpawner>
 
         return decks;
     }
+}
+
+public enum EventId
+{
+    LEVEL_SPAWNED
 }
