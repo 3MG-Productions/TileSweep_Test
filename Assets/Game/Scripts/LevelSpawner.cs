@@ -4,6 +4,7 @@ using ThreeMG;
 using ThreeMG.Helper.GridSystem;
 using ThreeMG.Helper.ObjectPooling;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelSpawner : Singleton<LevelSpawner>
 {
@@ -40,10 +41,14 @@ public class LevelSpawner : Singleton<LevelSpawner>
         SpawnLevel();
     }
 
-    [Button]
     public void SpawnLevel()
     {
         SpawnLevel(currentLevelConfig);
+    }
+
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public Card PopCardFromRemaining(int index = 0)

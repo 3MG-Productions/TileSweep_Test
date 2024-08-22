@@ -18,7 +18,7 @@ MonoBehaviour:
   MatchCount: 3
   SpawnCount: 3
   IsSpawnIndependent: 0
-  CardsMultiplier: 12
+  CardsMultiplier: 15
   Cards:
   - Color: {fileID: 2100000, guid: 4e2f15ad6dac5f3418baf6ccbf6d5ebd, type: 2}
     Count: 5

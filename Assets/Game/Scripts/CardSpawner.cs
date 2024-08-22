@@ -8,16 +8,17 @@ public class CardSpawner : MonoBehaviour
     {
         if(Card == null)
         {
-        //TODO: feedback here
+            //TODO: feedback here
+            Card = LevelSpawner.Instance.PopCardFromRemaining();
 
-        Card = LevelSpawner.Instance.PopCardFromRemaining();
+            if(Card != null)
+            {
+                Card.gameObject.SetActive(true);
 
-        Card.gameObject.SetActive(true);
+                Card.transform.SetParent(transform, false);
 
-        Card.transform.SetParent(transform, false);
-
-        Card.transform.localPosition = Vector3.zero;
-
+                Card.transform.localPosition = Vector3.zero;
+            }
         }
     }
 }

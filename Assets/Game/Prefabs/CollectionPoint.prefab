@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6094767655211065848}
   - component: {fileID: 1084328154017290264}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CollectionPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ca1455386500042a2c486bae6ddfaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Card: {fileID: 0}
 --- !u!1001 &8932656965308643337
 PrefabInstance:
   m_ObjectHideFlags: 0

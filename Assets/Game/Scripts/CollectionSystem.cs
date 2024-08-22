@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,7 +13,7 @@ public class CollectionSystem : MonoBehaviour
     private Deck[][] decks;
     private List<CardSpawner> spawners;
 
-    void Start()
+    void Awake()
     {
         EventController.StartListening(GameEvent.EVENT_LEVEL_SPAWNED, OnLevelSpawned);
     }
@@ -25,11 +27,11 @@ public class CollectionSystem : MonoBehaviour
     {
         if(Input.GetMouseButtonUp(0))
         {
-            OnPointerUp();
+            StartCoroutine(OnPointerUp());
         }
     }
 
-    public void OnPointerUp()
+    public IEnumerator OnPointerUp()
     {
         Vector2 position = Input.mousePosition;
 
@@ -47,7 +49,10 @@ public class CollectionSystem : MonoBehaviour
 
                     Card cardToMove = cardSpawner.Card;
 
-                    cardToMove.transform.position = vacantPoint.transform.position;
+                    cardToMove.transform.DOMove(vacantPoint.transform.position, 0.2f);
+
+                    yield return new WaitForSeconds(0.25f);
+
                     cardSpawner.Card = null;
                     vacantPoint.Card = cardToMove;
 
@@ -78,8 +83,6 @@ public class CollectionSystem : MonoBehaviour
     {
         List<int> vacantIndices = new List<int>();
 
-        bool cardsMoved = false;
-
         for(int c = collectionPoints.Count - 1; c >= 0; c--)
         {
             if(collectionPoints[c].Card != null)
@@ -102,8 +105,6 @@ public class CollectionSystem : MonoBehaviour
 
                                 if(vacantIndices.Count > 0)
                                 {
-                                    cardsMoved = true;
-
                                     int lowestIndex = vacantIndices[vacantIndices.Count - 1];
 
                                     collectionPoints[lowestIndex].Card = card;
@@ -111,7 +112,10 @@ public class CollectionSystem : MonoBehaviour
                                     deck.Cards.Remove(card);
 
                                     card.transform.SetParent(collectionPoints[lowestIndex].transform);
-                                    card.transform.localPosition = Vector3.zero;
+
+                                    card.transform.DOMove(collectionPoints[lowestIndex].transform.position, 0.2f);
+
+                                    yield return new WaitForSeconds(0.22f);
 
                                     vacantIndices.Remove(lowestIndex);
                                 }
@@ -137,7 +141,7 @@ public class CollectionSystem : MonoBehaviour
     {
         bool isMatchFound = false;
 
-        Dictionary<CardTypes, List<Card>> matchedCards = new Dictionary<CardTypes, List<Card>>();
+        Dictionary<CardTypes, List<CollectionCard>> matchedCards = new Dictionary<CardTypes, List<CollectionCard>>();
 
         for(int i = 0; i < collectionPoints.Count; i++)
         {
@@ -147,14 +151,19 @@ public class CollectionSystem : MonoBehaviour
 
                 if(!matchedCards.ContainsKey(card.CardType))
                 {
-                    matchedCards.Add(card.CardType, new List<Card>());
+                    matchedCards.Add(card.CardType, new List<CollectionCard>());
                 }
 
-                matchedCards[card.CardType].Add(card);
+                CollectionCard collectionCard = new CollectionCard();
+
+                collectionCard.Card = card;
+                collectionCard.Point = collectionPoints[i];
+
+                matchedCards[card.CardType].Add(collectionCard);
             }
         }
 
-        foreach(KeyValuePair<CardTypes, List<Card>> pair in matchedCards)
+        foreach(KeyValuePair<CardTypes, List<CollectionCard>> pair in matchedCards)
         {
             if(pair.Value.Count >= 3)
             {
@@ -164,18 +173,19 @@ public class CollectionSystem : MonoBehaviour
 
                 List<Card> cardsToRemove = new List<Card>();
 
-                foreach(Card card in pair.Value)
+                foreach(CollectionCard Ccard in pair.Value)
                 {
+                    Card card = Ccard.Card;
+
                     cardsToRemove.Add(card);
                     deletedCount++;
+                    Ccard.Point.Card = null;
 
                     if(deletedCount == 3)
                     {
                         break;
                     }
                 }
-
-                pair.Value.RemoveAll(cardsToRemove.Contains);
 
                 for(int i = cardsToRemove.Count - 1; i >= 0; i--)
                 {
@@ -222,4 +232,10 @@ public class CollectionSystem : MonoBehaviour
         spawners = LevelSpawner.Instance.spawnPoints;
         decks = LevelSpawner.Instance.decks;
     }
+
+    class CollectionCard
+    {
+        public Card Card;
+        public CollectionPoint Point;
+    } 
 }
