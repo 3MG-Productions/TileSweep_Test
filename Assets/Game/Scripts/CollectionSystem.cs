@@ -13,6 +13,9 @@ public class CollectionSystem : MonoBehaviour
     private Deck[][] decks;
     private List<CardSpawner> spawners;
 
+    [SerializeField] private float moveDuration = 0.2f;
+    [SerializeField] private Vector3 rotationOffset = new Vector3(180, 0, 0);
+
     void Awake()
     {
         EventController.StartListening(GameEvent.EVENT_LEVEL_SPAWNED, OnLevelSpawned);
@@ -49,9 +52,9 @@ public class CollectionSystem : MonoBehaviour
 
                     Card cardToMove = cardSpawner.Card;
 
-                    cardToMove.transform.DOMove(vacantPoint.transform.position, 0.2f);
+                    cardToMove.transform.DOMove(vacantPoint.transform.position, moveDuration);
 
-                    yield return new WaitForSeconds(0.25f);
+                    yield return new WaitForSeconds(moveDuration + 0.1f);
 
                     cardSpawner.Card = null;
                     vacantPoint.Card = cardToMove;
@@ -83,6 +86,14 @@ public class CollectionSystem : MonoBehaviour
     {
         List<int> vacantIndices = new List<int>();
 
+        for(int i = collectionPoints.Count - 1; i >= 0; i--)
+        {
+            if(collectionPoints[i].Card == null)
+            {
+                vacantIndices.Add(i);
+            }
+        }
+
         for(int c = collectionPoints.Count - 1; c >= 0; c--)
         {
             if(collectionPoints[c].Card != null)
@@ -113,9 +124,13 @@ public class CollectionSystem : MonoBehaviour
 
                                     card.transform.SetParent(collectionPoints[lowestIndex].transform);
 
-                                    card.transform.DOMove(collectionPoints[lowestIndex].transform.position, 0.2f);
+                                    card.transform.DOLocalJump(Vector3.zero, 5,1, moveDuration);
+                                    Vector3 rotation = card.transform.eulerAngles;
+                                    rotation += rotationOffset;
 
-                                    yield return new WaitForSeconds(0.22f);
+                                    card.transform.DORotate(rotation,moveDuration);
+
+                                    yield return new WaitForSeconds(moveDuration + 0.1f);
 
                                     vacantIndices.Remove(lowestIndex);
                                 }
@@ -127,10 +142,6 @@ public class CollectionSystem : MonoBehaviour
                         }
                     }
                 }
-            }
-            else
-            {
-                vacantIndices.Add(c);
             }
         }
 
@@ -191,6 +202,11 @@ public class CollectionSystem : MonoBehaviour
                 {
                     Destroy(cardsToRemove[i].gameObject);
                 }
+            }
+
+            if(isMatchFound)
+            {
+                break;
             }
         }
 
