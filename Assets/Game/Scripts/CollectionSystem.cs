@@ -13,9 +13,13 @@ public class CollectionSystem : MonoBehaviour
     [SerializeField] private float moveDuration = 0.2f;
     [SerializeField] private Vector3 rotationOffset = new Vector3(180, 0, 0);
     [SerializeField] private Transform VanishingPoint;
+    [SerializeField] private float cardVanishDelay = 0.8f;
+
+    public bool IsMatchingInProgress { get; private set; }
 
     void Awake()
     {
+        IsMatchingInProgress = false;
         EventController.StartListening(GameEvent.EVENT_LEVEL_SPAWNED, OnLevelSpawned);
     }
 
@@ -34,6 +38,11 @@ public class CollectionSystem : MonoBehaviour
 
     public IEnumerator OnPointerUp()
     {
+        if(IsMatchingInProgress)
+        {
+            yield return null;
+        }
+
         Vector2 position = Input.mousePosition;
 
         Ray ray = Camera.main.ScreenPointToRay(position);
@@ -46,6 +55,8 @@ public class CollectionSystem : MonoBehaviour
             {
                 if(cardSpawner.Card!= null)
                 {
+                    IsMatchingInProgress = true;
+
                     CollectionPoint vacantPoint = GetVacantCollectionPoint();
 
                     Card cardToMove = cardSpawner.Card;
@@ -53,10 +64,10 @@ public class CollectionSystem : MonoBehaviour
                     cardSpawner.Card = null;
                     vacantPoint.Card = cardToMove;
 
-                    cardToMove.transform.DOMove(vacantPoint.transform.position, moveDuration);
-                    cardToMove.transform.DORotate(cardToMove.transform.eulerAngles + rotationOffset, moveDuration);
+                    // cardToMove.transform.DOMove(vacantPoint.transform.position, moveDuration);
+                    // cardToMove.transform.DORotate(cardToMove.transform.eulerAngles + rotationOffset, moveDuration);
 
-                    yield return new WaitForSeconds(moveDuration + 0.1f);
+                    yield return new WaitForSeconds( 0.1f);
 
                     cardToMove.transform.SetParent(vacantPoint.transform);
 
@@ -66,13 +77,7 @@ public class CollectionSystem : MonoBehaviour
                     }
                     else
                     {
-                        if(areAllSpawnersEmpty())
-                        {
-                            foreach (CardSpawner spawner in spawners)
-                            {
-                                spawner.SpawnNew();                                
-                            }
-                        }
+                        // clubbed spawning moved to RemoveMatchedCards()
                     }
 
                     StartCoroutine(GrabSimilarFromDecks());
@@ -182,7 +187,6 @@ public class CollectionSystem : MonoBehaviour
 
                 if(cardsAnimationOrder == null || (cardsAnimationOrder != null && !cardsAnimationOrder.Contains(availableCards[i])))
                 {
-
                     collectionPoints[i].Card.transform.DOLocalMove(Vector3.zero, moveDuration);
                 }
             }
@@ -191,6 +195,8 @@ public class CollectionSystem : MonoBehaviour
                 collectionPoints[i].Card = null;
             }
         }
+
+        yield return new WaitForSeconds(moveDuration + 0.1f);
 
         if(cardsAnimationOrder != null)
         foreach (Card card in cardsAnimationOrder)
@@ -267,7 +273,7 @@ public class CollectionSystem : MonoBehaviour
 
                 // sequence.Play();
 
-                yield return new WaitForSeconds(moveDuration + 0.2f);
+                yield return new WaitForSeconds(cardVanishDelay);
 
                 for(int i = cardsToRemove.Count - 1; i >= 0; i--)
                 {
@@ -286,6 +292,18 @@ public class CollectionSystem : MonoBehaviour
         if(isMatchFound)
         {
             StartCoroutine(GrabSimilarFromDecks());
+        }
+        else
+        {
+            IsMatchingInProgress = false;
+
+            if(areAllSpawnersEmpty())
+            {
+                foreach (CardSpawner spawner in spawners)
+                {
+                    spawner.SpawnNew();                                
+                }
+            }
         }
     }
 
