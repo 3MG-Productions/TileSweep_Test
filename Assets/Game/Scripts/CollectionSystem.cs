@@ -196,7 +196,22 @@ public class CollectionSystem : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(moveDuration + 0.1f);
+        bool isAnythingMoving = false;
+
+        foreach(CollectionPoint cp in collectionPoints)
+        {
+            if(cp.Card!= null)
+            {
+                if(cp.Card.transform.localPosition.magnitude > 0.01f)
+                {
+                    isAnythingMoving = true;
+                    break;
+                }
+            }
+        }
+
+        if(isAnythingMoving)
+            yield return new WaitForSeconds(moveDuration + 0.1f);
 
         if(cardsAnimationOrder != null)
         foreach (Card card in cardsAnimationOrder)

@@ -867,7 +867,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   moveDuration: 0.15
-  rotationOffset: {x: 180, y: 0, z: 0}
+  rotationOffset: {x: 0, y: 0, z: 0}
   VanishingPoint: {fileID: 407203719}
   cardVanishDelay: 0.8
 --- !u!1 &963194225
