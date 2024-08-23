@@ -89,6 +89,8 @@ public class LevelSpawner : Singleton<LevelSpawner>
 
         spawnPoints = new List<CardSpawner>();
 
+        List<Card> cardsToSpawn = new List<Card>();
+
         for(int i = 0; i < levelConfig.SpawnCount; i++)
         {
             GameObject spawner = Instantiate(cardSpawnerPrefab.gameObject, Vector3.zero, Quaternion.identity, transform);
@@ -101,9 +103,17 @@ public class LevelSpawner : Singleton<LevelSpawner>
 
             CardSpawner cardSpawner = spawner.GetComponent<CardSpawner>();
 
-            cardSpawner.SpawnNew();
-
             spawnPoints.Add(cardSpawner);
+        }
+
+        for(int i = 0; i < cardsCollection.Count; i++)
+        {
+            spawnPoints[i % levelConfig.SpawnCount].QueueCard(cardsCollection[i]);
+        }
+
+        foreach (CardSpawner spawner in spawnPoints)
+        {
+            spawner.SpawnNew();
         }
     }
 
