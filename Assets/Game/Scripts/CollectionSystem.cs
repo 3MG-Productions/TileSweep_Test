@@ -190,6 +190,7 @@ public class CollectionSystem : MonoBehaviour
     private IEnumerator RemoveMatchedCards()
     {
         bool isMatchFound = false;
+        int matchCount = LevelSpawner.Instance.CurrentLevelConfig.MatchCount;
 
         Dictionary<CardTypes, List<CollectionCard>> matchedCards = new Dictionary<CardTypes, List<CollectionCard>>();
 
@@ -215,7 +216,7 @@ public class CollectionSystem : MonoBehaviour
 
         foreach(KeyValuePair<CardTypes, List<CollectionCard>> pair in matchedCards)
         {
-            if(pair.Value.Count >= 3)
+            if(pair.Value.Count >= matchCount)
             {
                 isMatchFound = true;
 
@@ -231,18 +232,28 @@ public class CollectionSystem : MonoBehaviour
                     deletedCount++;
                     Ccard.Point.Card = null;
 
-                    card.transform.DOMove(VanishingPoint.position + Vector3.up * card.CardHeight * deletedCount * 2, moveDuration);
-                    card.transform.DORotate(card.transform.eulerAngles + rotationOffset, moveDuration);
+                    card.PlayExitAnimation(deletedCount);
 
-                    yield return new WaitForSeconds(moveDuration/3 + 0.1f);
-
-                    if(deletedCount == 3)
+                    if(deletedCount == matchCount)
                     {
                         break;
                     }
                 }
 
-                yield return new WaitForSeconds(moveDuration + 0.1f);
+                // Sequence sequence = DOTween.Sequence();
+
+                Vector3 pos = cardsToRemove[0].transform.position;
+                pos.y = VanishingPoint.position.y;
+
+                // for (int i = 0; i < matchCount; i++)
+                // {
+                //     sequence.Append(cardsToRemove[i].transform.DOMove(pos, moveDuration));
+                //     pos.y += cardsToRemove[i].GetComponent<Card>().CardHeight;
+                // }
+
+                // sequence.Play();
+
+                yield return new WaitForSeconds(moveDuration * matchCount + 0.5f);
 
                 for(int i = cardsToRemove.Count - 1; i >= 0; i--)
                 {
