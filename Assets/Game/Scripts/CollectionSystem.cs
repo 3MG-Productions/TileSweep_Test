@@ -93,6 +93,8 @@ public class CollectionSystem : MonoBehaviour
             }
         }
 
+        List<Card> cardsAnimationOrder = new List<Card>();
+
         for(int c = collectionPoints.Count - 1; c >= 0; c--)
         {
             if(collectionPoints[c].Card != null)
@@ -111,7 +113,7 @@ public class CollectionSystem : MonoBehaviour
 
                             if(card.CardType == cardTypeToCollect)
                             {
-                                yield return new WaitForSeconds(0.1f);
+                                // yield return new WaitForSeconds(0.1f);
 
                                 if(vacantIndices.Count > 0)
                                 {
@@ -123,13 +125,15 @@ public class CollectionSystem : MonoBehaviour
 
                                     card.transform.SetParent(collectionPoints[lowestIndex].transform);
 
-                                    card.transform.DOLocalJump(Vector3.zero, 5,1, moveDuration);
+                                    cardsAnimationOrder.Add(card);
+
+                                    // card.transform.DOLocalJump(Vector3.zero, 5,1, moveDuration);
                                     Vector3 rotation = card.transform.eulerAngles;
                                     rotation += rotationOffset;
 
-                                    card.transform.DORotate(rotation,moveDuration);
+                                    // card.transform.DORotate(rotation,moveDuration);
 
-                                    yield return new WaitForSeconds(moveDuration + 0.1f);
+                                    // yield return new WaitForSeconds(moveDuration + 0.1f);
 
                                     vacantIndices.Remove(lowestIndex);
                                 }
@@ -144,12 +148,12 @@ public class CollectionSystem : MonoBehaviour
             }
         }
 
-        yield return StartCoroutine(SortCollectionPoints());
+        yield return StartCoroutine(SortCollectionPoints(cardsAnimationOrder));
 
         StartCoroutine(RemoveMatchedCards());
     }
 
-    private IEnumerator SortCollectionPoints()
+    private IEnumerator SortCollectionPoints(List<Card> cardsAnimationOrder = null)
     {
         List<Card> availableCards = new List<Card>();
 
@@ -176,7 +180,11 @@ public class CollectionSystem : MonoBehaviour
 
                 collectionPoints[i].Card.transform.SetParent(collectionPoints[i].transform);
 
-                collectionPoints[i].Card.transform.DOLocalMove(Vector3.zero, moveDuration);
+                if(cardsAnimationOrder == null || (cardsAnimationOrder != null && !cardsAnimationOrder.Contains(availableCards[i])))
+                {
+
+                    collectionPoints[i].Card.transform.DOLocalMove(Vector3.zero, moveDuration);
+                }
             }
             else
             {
@@ -184,7 +192,13 @@ public class CollectionSystem : MonoBehaviour
             }
         }
 
-        yield return new WaitForSeconds(moveDuration + 0.2f);
+        if(cardsAnimationOrder != null)
+        foreach (Card card in cardsAnimationOrder)
+        {
+            card.transform.DOLocalMove(Vector3.zero, moveDuration);
+
+            yield return new WaitForSeconds(moveDuration + 0.1f);
+        }
     }
 
     private IEnumerator RemoveMatchedCards()
@@ -253,7 +267,7 @@ public class CollectionSystem : MonoBehaviour
 
                 // sequence.Play();
 
-                yield return new WaitForSeconds(moveDuration * matchCount + 0.5f);
+                yield return new WaitForSeconds(moveDuration + 0.2f);
 
                 for(int i = cardsToRemove.Count - 1; i >= 0; i--)
                 {
