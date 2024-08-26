@@ -104,13 +104,13 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueOffset: 0
-    - _RampSmoothing: 0.001
+    - _RampSmoothing: 0.596
     - _RampSmoothingOtherLights: 0.5
-    - _RampThreshold: 0.21
+    - _RampThreshold: 0.492
     - _RampThresholdOtherLights: 0.5
     - _ReceiveShadows: 1
     - _ReceiveShadowsOff: 0
-    - _RimMax: 0.56
+    - _RimMax: 0
     - _RimMin: 0
     - _Shadow_HSV_H: 0
     - _Shadow_HSV_S: 0
@@ -133,8 +133,8 @@ Material:
     - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 1, g: 0.6, b: 0.9953354, a: 0.5}
-    - _SColor: {r: 0.78400004, g: 0.19506219, b: 0.7652441, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _SColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 0.99215686, g: 0.7529412, b: 0.9909634, a: 1}
   m_BuildTextureStacks: []

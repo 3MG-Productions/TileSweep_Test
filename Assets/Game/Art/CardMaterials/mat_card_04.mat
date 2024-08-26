@@ -26,7 +26,9 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _RECEIVE_SHADOWS_OFF
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - TCP2_COLORS_AS_NORMALS
+  - TCP2_UV_NORMALS_ZW
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -77,6 +79,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SketchTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -114,20 +120,24 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NormalsSource: 1
+    - _NormalsUVType: 2
     - _OcclusionStrength: 1
+    - _OutlineWidth: 0.1
     - _Parallax: 0.02
     - _QueueOffset: 0
-    - _RampSmoothing: 0.001
+    - _RampSmoothing: 0.596
     - _RampSmoothingOtherLights: 0.5
-    - _RampThreshold: 0.21
+    - _RampThreshold: 0.492
     - _RampThresholdOtherLights: 0.5
     - _ReceiveShadows: 1
     - _ReceiveShadowsOff: 0
-    - _RimMax: 0.56
+    - _RimMax: 0
     - _RimMin: 0
     - _Shadow_HSV_H: 0
     - _Shadow_HSV_S: 0
     - _Shadow_HSV_V: 0
+    - _SketchTexture_OffsetSpeed: 52.1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -138,16 +148,22 @@ Material:
     - _UVSec: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
+    - __BeginGroup_HSV_albedo: 0
     - __BeginGroup_ShadowHSV: 0
     - __EndGroup: 0
     - __dummy__: 0
+    - _albedo_hue: 0
+    - _albedo_sat: 0
+    - _albedo_val: 0
     m_Colors:
-    - _BaseColor: {r: 0, g: 0.75361013, b: 0.83699995, a: 1}
+    - _BaseColor: {r: 0.17021184, g: 0.8018868, b: 0.8018868, a: 1}
     - _Color: {r: 1, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _HColor: {r: 1, g: 1, b: 1, a: 1}
-    - _RimColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 0.5}
-    - _SColor: {r: 0.03208439, g: 0.94958943, b: 0.9716981, a: 1}
+    - _HColor: {r: 0.18039216, g: 0.99607843, b: 0.99607843, a: 1}
+    - _OutlineColorVertex: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 0.5}
+    - _SColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SketchColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpecularColor: {r: 0, g: 0.9528302, b: 0.93721, a: 1}
+    - _SpecularColor: {r: 0.18039216, g: 0.9960785, b: 0.9960785, a: 1}
   m_BuildTextureStacks: []

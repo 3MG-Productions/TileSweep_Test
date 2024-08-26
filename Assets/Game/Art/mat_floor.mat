@@ -33,7 +33,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: _RampThreshold
+  m_LockedProperties: _BaseMap _RampThreshold
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -78,7 +78,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Ramp:
-        m_Texture: {fileID: 2800000, guid: ccad9b0732473ee4e95de81e50e9050f, type: 3}
+        m_Texture: {fileID: 2800000, guid: a2daa9b606711a643808bebed4c59a0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RampOtherLights:
@@ -90,6 +90,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StylizedThreshold:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -139,7 +143,7 @@ Material:
     - _ReceiveShadows: 1
     - _ReceiveShadowsOff: 1
     - _RimMax: 1
-    - _RimMin: 0.99
+    - _RimMin: 0.35
     - _Shadow_HSV_H: 0
     - _Shadow_HSV_S: 0
     - _Shadow_HSV_V: 0
@@ -162,13 +166,13 @@ Material:
     - _albedo_sat: 0
     - _albedo_val: 0
     m_Colors:
-    - _BaseColor: {r: 0.7725491, g: 0.7686275, b: 0.7803922, a: 1}
+    - _BaseColor: {r: 0.7568628, g: 0.7490196, b: 0.7607844, a: 1}
     - _Color: {r: 0.3146137, g: 0.39262137, b: 0.6603774, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _HColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColorVertex: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.5}
-    - _SColor: {r: 0.6415094, g: 0.6415094, b: 0.6415094, a: 1}
+    - _SColor: {r: 0.3584906, g: 0.3584906, b: 0.3584906, a: 1}
     - _SketchColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SpecularColor: {r: 0, g: 0, b: 0, a: 1}
