@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GridSize: {x: 3, y: 3}
   StackSize: {x: 3, y: 5}
-  CollectionTilesCount: 5
+  CollectionTilesCount: 6
   MatchCount: 3
   SpawnCount: 3
   IsSpawnIndependent: 0

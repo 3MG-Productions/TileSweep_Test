@@ -15,8 +15,11 @@ public class CollectionSystem : MonoBehaviour
     [SerializeField] private Transform VanishingPoint;
     [SerializeField] private float cardVanishDelay = 0.8f;
     [SerializeField] private bool onlyCollectMatches = false;
+    [SerializeField] private bool autoPlay = false;
 
     public bool IsMatchingInProgress { get; private set; }
+
+    private Card lastPickedCard;
 
     void Awake()
     {
@@ -72,6 +75,8 @@ public class CollectionSystem : MonoBehaviour
 
                     cardToMove.transform.SetParent(vacantPoint.transform);
 
+                    lastPickedCard = cardToMove;
+
                     if(LevelSpawner.Instance.CurrentLevelConfig.IsSpawnIndependent)
                     {
                         cardSpawner.SpawnNew();
@@ -116,7 +121,15 @@ public class CollectionSystem : MonoBehaviour
         {
             if(collectionPoints[c].Card != null)
             {
-                CardTypes cardTypeToCollect = collectionPoints[c].Card.CardType;
+                CardTypes cardTypeToCollect ;
+                if(autoPlay)
+                {
+                    cardTypeToCollect = collectionPoints[c].Card.CardType;
+                }
+                else
+                {
+                    cardTypeToCollect = lastPickedCard.CardType;
+                }
 
                 if(onlyCollectMatches && similarCards.ContainsKey(cardTypeToCollect) && similarCards[cardTypeToCollect].Count >= 3)
                 {
@@ -327,7 +340,7 @@ public class CollectionSystem : MonoBehaviour
 
         yield return StartCoroutine(SortCollectionPoints());
 
-        if(isMatchFound)
+        if(isMatchFound && autoPlay)
         {
             StartCoroutine(GrabSimilarFromDecks());
         }
