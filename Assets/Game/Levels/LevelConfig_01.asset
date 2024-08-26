@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: LevelConfig_01
   m_EditorClassIdentifier: 
   GridSize: {x: 3, y: 3}
-  StackSize: {x: 3, y: 5}
+  StackSize: {x: -1, y: 3}
   CollectionTilesCount: 6
   MatchCount: 3
   SpawnCount: 3
   IsSpawnIndependent: 0
-  CardsMultiplier: 15
+  CardsMultiplier: 5
   Cards:
   - Color: {fileID: 2100000, guid: 4e2f15ad6dac5f3418baf6ccbf6d5ebd, type: 2}
     Count: 5

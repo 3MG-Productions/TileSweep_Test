@@ -170,7 +170,9 @@ public class LevelSpawner : Singleton<LevelSpawner>
             CardTypes cardType = (CardTypes)i;
             Material material = levelConfig.Cards[i].Color;
 
-            for (int j = 0; j < levelConfig.CardsMultiplier; j++)
+            int spawnCount = levelConfig.CardsMultiplier * levelConfig.MatchCount;
+
+            for (int j = 0; j < spawnCount; j++)
             {
                 GameObject cardGO = ObjectPooler.Instance.SpawnFromPool(tag_cards, Vector3.zero, Quaternion.identity);
                 Card card = cardGO.GetComponent<Card>();
