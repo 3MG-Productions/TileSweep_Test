@@ -12,23 +12,27 @@ public class LevelSpawner : Singleton<LevelSpawner>
     [SerializeField] private LevelConfig currentLevelConfig;
     public LevelConfig CurrentLevelConfig => currentLevelConfig;
     [SerializeField] private string tag_cards;
+    [ToggleGroup("Spawner")]
+    public bool Spawner = true;
 
-    [BoxGroup("Spawner")]
+    [ToggleGroup("Spawner")]
     [SerializeField] private CardSpawner cardSpawnerPrefab;
-    [BoxGroup("Spawner")]
+    [ToggleGroup("Spawner")]
     [SerializeField] private Vector3 spawnPosition;
-    [BoxGroup("Spawner")]
+    [ToggleGroup("Spawner")]
     [SerializeField] private float spawnOffset;
-    [BoxGroup("Spawner")]
+    [ToggleGroup("Spawner")]
     public List<CardSpawner> spawnPoints { get; private set; }
 
-    [BoxGroup("Collection Point")]
+    [ToggleGroup("CollectionPoint")]
+    public bool CollectionPoint = true;
+
+    [ToggleGroup("CollectionPoint")]
     [SerializeField] private CollectionPoint collectionPointPrefab;
-    [BoxGroup("Collection Point")]
+    [ToggleGroup("CollectionPoint")]
     [SerializeField] private Vector3 collectionPosition;
-    [BoxGroup("Collection Point")]
+    [ToggleGroup("CollectionPoint")]
     [SerializeField] private float collectionOffset;
-    [BoxGroup("Collection Point")]
     public List<CollectionPoint> collectionPoints { get; private set; }
     public Deck[][] decks;
 

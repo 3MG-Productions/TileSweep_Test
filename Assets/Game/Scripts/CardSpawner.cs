@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class CardSpawner : MonoBehaviour
 {
     public Card Card;
+    public MMF_Player Feedback_newSpawn;
 
     public List<Card> cardsInQueue;
 
@@ -60,5 +62,12 @@ public class CardSpawner : MonoBehaviour
         card.transform.SetParent(transform);
 
         RearrangeCards();
+    }
+    private void PlayFeedback_Spawn()
+    {
+        if(Feedback_newSpawn!= null)
+        {
+            Feedback_newSpawn.PlayFeedbacks();
+        }
     }
 }

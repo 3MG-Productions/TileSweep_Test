@@ -169,9 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevelConfig: {fileID: 11400000, guid: 9bd22fe68afb8964db26b0585b617c63, type: 2}
   tag_cards: CARD
+  Spawner: 1
   cardSpawnerPrefab: {fileID: -6156740622798062675, guid: ff9b2b1cb4feacf44bcd3835157f98d5, type: 3}
   spawnPosition: {x: 0, y: 0, z: -17}
   spawnOffset: 3.8
+  CollectionPoint: 1
   collectionPointPrefab: {fileID: 1084328154017290264, guid: 523cd69aaae023647a9aa6a895f9010d, type: 3}
   collectionPosition: {x: 0, y: 0, z: -9}
   collectionOffset: 3.2
@@ -402,7 +404,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
