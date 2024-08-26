@@ -78,7 +78,7 @@ public class LevelSpawner : Singleton<LevelSpawner>
 
         decks = AssignCardsToDecks(levelConfig, cardsCollection);
 
-        SpawnSpawners(levelConfig);
+        // SpawnSpawners(levelConfig);
 
         SpawnCollectionPoints(levelConfig);
 
@@ -145,7 +145,9 @@ public class LevelSpawner : Singleton<LevelSpawner>
             {
                 List<Card> cardsToAdd = new List<Card>();
 
-                int cardsCount = levelConfig.StackSize.x == -1 ? levelConfig.StackSize.y : Random.Range(levelConfig.StackSize.x, levelConfig.StackSize.y);
+                // int cardsCount = levelConfig.StackSize.x == -1 ? levelConfig.StackSize.y : Random.Range(levelConfig.StackSize.x, levelConfig.StackSize.y);
+
+                int cardsCount = (levelConfig.CardsMultiplier * levelConfig.MatchCount * levelConfig.Cards.Count) / (levelConfig.GridSize.x * levelConfig.GridSize.y);
 
                 for (int k = 0; k < cardsCount; k++)
                 {

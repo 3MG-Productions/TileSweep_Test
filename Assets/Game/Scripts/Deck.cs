@@ -9,6 +9,7 @@ public class Deck : MonoBehaviour
     public float DelayBetweenCards = 0.5f;
     public float DelayBetweenDeck = 0.5f;
     public MMF_Player Feedback_spawn;
+    public Card Card;
 
     public void Init(List<Card> cards)
     {
@@ -25,8 +26,21 @@ public class Deck : MonoBehaviour
             card.transform.localPosition = position;
             position.y += card.CardHeight;
         }
-
+        SpawnNew();
         StartCoroutine(PlayFeedback_spawn());
+    }
+
+    public void SpawnNew()
+    {
+        if(Card == null)
+        {
+            Card = Cards.Count > 0 ? Cards[Cards.Count - 1] : null;
+
+            if(Card != null)
+            {
+                Cards.Remove(Card);
+            }
+        }
     }
 
     public IEnumerator PlayFeedback_spawn()

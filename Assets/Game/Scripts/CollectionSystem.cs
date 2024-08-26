@@ -53,7 +53,7 @@ public class CollectionSystem : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitInfo, spawnlayer))
         {
-            CardSpawner cardSpawner = hitInfo.collider.gameObject.GetComponent<CardSpawner>();
+            Deck cardSpawner = hitInfo.collider.gameObject.GetComponent<Deck>();
 
             if (cardSpawner != null)
             {
@@ -144,7 +144,7 @@ public class CollectionSystem : MonoBehaviour
 
                         for(int k = deck.Cards.Count - 1; k >= 0; k--)
                         {
-                            Card card = deck.Cards[k];
+                            Card card = deck.Card;
 
                             if(card.CardType == cardTypeToCollect )
                             {
@@ -160,7 +160,9 @@ public class CollectionSystem : MonoBehaviour
 
                                     collectionPoints[lowestIndex].AddCard(card);
 
-                                    deck.Cards.Remove(card);
+                                    // deck.Cards.Remove(card);
+                                    deck.Card = null;
+                                    deck.SpawnNew();
 
                                     card.transform.SetParent(collectionPoints[lowestIndex].transform);
 
@@ -348,7 +350,7 @@ public class CollectionSystem : MonoBehaviour
         {
             IsMatchingInProgress = false;
 
-            if(areAllSpawnersEmpty())
+            if(!LevelSpawner.Instance.CurrentLevelConfig.IsSpawnIndependent && areAllSpawnersEmpty())
             {
                 foreach (CardSpawner spawner in spawners)
                 {
