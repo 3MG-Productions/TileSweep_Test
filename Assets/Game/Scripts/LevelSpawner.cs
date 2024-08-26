@@ -33,7 +33,7 @@ public class LevelSpawner : Singleton<LevelSpawner>
     [SerializeField] private Vector3 collectionPosition;
     [ToggleGroup("CollectionPoint")]
     [SerializeField] private float collectionOffset;
-    public List<CollectionPoint> collectionPoints { get; private set; }
+    [field: SerializeField] public List<CollectionPoint> collectionPoints { get; private set; }
     public Deck[][] decks;
 
     private List<Card> cardsCollection;
@@ -139,26 +139,32 @@ public class LevelSpawner : Singleton<LevelSpawner>
     {
         Deck[][] decks = CreateDecks();
 
+        List<Deck> decksList = new List<Deck>();
+
         for (int i = 0; i < decks.GetLength(0); i++)
         {
             for (int j = 0; j < decks[i].GetLength(0); j++)
             {
-                List<Card> cardsToAdd = new List<Card>();
+                decksList.Add(decks[i][j]);
+            }
+        }
 
-                // int cardsCount = levelConfig.StackSize.x == -1 ? levelConfig.StackSize.y : Random.Range(levelConfig.StackSize.x, levelConfig.StackSize.y);
+        int cardsCount = cardsCollection.Count;
 
-                int cardsCount = (levelConfig.CardsMultiplier * levelConfig.MatchCount * levelConfig.Cards.Count) / (levelConfig.GridSize.x * levelConfig.GridSize.y);
+        for (int i = 0; i < cardsCount; i++)
+        {
+            if (cardsCollection.Count > 0)
+            {
+                Card card = PopCardFromRemaining();
+                decksList[i % decksList.Count].AddCard(card);
+            }
+        }
 
-                for (int k = 0; k < cardsCount; k++)
-                {
-                    if (cardsCollection.Count > 0)
-                    {
-                        Card card = PopCardFromRemaining();
-                        cardsToAdd.Add(card);
-                    }
-                }
-
-                decks[i][j].Init(cardsToAdd);
+        for (int i = 0; i < decks.GetLength(0); i++)
+        {
+            for (int j = 0; j < decks[i].GetLength(0); j++)
+            {
+                decks[i][j].Init(null);
             }
         }
 

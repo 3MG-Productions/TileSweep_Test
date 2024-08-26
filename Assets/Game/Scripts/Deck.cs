@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
-    public List<Card> Cards;
+    public List<Card> Cards = new List<Card>();
     public float DelayBetweenCards = 0.5f;
     public float DelayBetweenDeck = 0.5f;
     public MMF_Player Feedback_spawn;
@@ -13,7 +13,10 @@ public class Deck : MonoBehaviour
 
     public void Init(List<Card> cards)
     {
-        Cards = cards;
+        if(cards != null)
+        {
+            Cards = cards;
+        }
 
         Vector3 position = Vector3.zero;
 
@@ -30,17 +33,27 @@ public class Deck : MonoBehaviour
         StartCoroutine(PlayFeedback_spawn());
     }
 
+    public void AddCard(Card card)
+    {
+        if(Cards == null)
+        {
+            Cards = new List<Card>();
+        }
+
+        Cards.Add(card);
+    }
+
     public void SpawnNew()
     {
         if(Card == null)
         {
+        }
             Card = Cards.Count > 0 ? Cards[Cards.Count - 1] : null;
 
             if(Card != null)
             {
                 Cards.Remove(Card);
             }
-        }
     }
 
     public IEnumerator PlayFeedback_spawn()
@@ -57,6 +70,10 @@ public class Deck : MonoBehaviour
             yield return new WaitForSeconds(DelayBetweenCards);
 
             card.PlayFeedback_spawn();
-        }        
+        }
+
+        yield return new WaitForSeconds(DelayBetweenCards);
+
+        Card.PlayFeedback_spawn();
     }
 }

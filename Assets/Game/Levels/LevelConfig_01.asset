@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f64e15a921aa7f042b6d8476fdb3787e, type: 3}
   m_Name: LevelConfig_01
   m_EditorClassIdentifier: 
-  GridSize: {x: 3, y: 3}
+  GridSize: {x: 3, y: 5}
   StackSize: {x: -1, y: 3}
-  CollectionTilesCount: 6
+  CollectionTilesCount: 7
   MatchCount: 3
   SpawnCount: 3
   IsSpawnIndependent: 1
-  CardsMultiplier: 9
+  CardsMultiplier: 6
   Cards:
   - Color: {fileID: 2100000, guid: 4e2f15ad6dac5f3418baf6ccbf6d5ebd, type: 2}
     Count: 5
@@ -30,3 +30,7 @@ MonoBehaviour:
     Count: 5
   - Color: {fileID: 2100000, guid: bc6f266ad4a674444afa18a60bb389a3, type: 2}
     Count: 5
+  - Color: {fileID: 2100000, guid: fe170f7bd78a2d64a8001b9affdaa146, type: 2}
+    Count: 0
+  - Color: {fileID: 2100000, guid: 550239c93b8c0fc40b97930602c9a064, type: 2}
+    Count: 0

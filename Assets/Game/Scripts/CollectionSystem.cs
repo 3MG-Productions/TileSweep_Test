@@ -66,6 +66,12 @@ public class CollectionSystem : MonoBehaviour
                     Card cardToMove = cardSpawner.Card;
 
                     cardSpawner.Card = null;
+
+                    if(vacantPoint == null)
+                    {
+                        yield return null;
+                    }
+
                     vacantPoint.AddCard(cardToMove);
 
                     // cardToMove.transform.DOMove(vacantPoint.transform.position, moveDuration);
@@ -121,7 +127,8 @@ public class CollectionSystem : MonoBehaviour
         {
             if(collectionPoints[c].Card != null)
             {
-                CardTypes cardTypeToCollect ;
+                CardTypes cardTypeToCollect;
+
                 if(autoPlay)
                 {
                     cardTypeToCollect = collectionPoints[c].Card.CardType;
@@ -142,9 +149,14 @@ public class CollectionSystem : MonoBehaviour
                     {
                         Deck deck = decks[i][j];
 
-                        for(int k = deck.Cards.Count - 1; k >= 0; k--)
+                        for(int k = deck.Cards.Count; k >= 0; k--)
                         {
                             Card card = deck.Card;
+
+                            if(card == null)
+                            {
+                                continue;
+                            }
 
                             if(card.CardType == cardTypeToCollect )
                             {
