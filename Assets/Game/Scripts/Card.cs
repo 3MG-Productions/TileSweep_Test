@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class Card : MonoBehaviour
@@ -7,6 +8,8 @@ public class Card : MonoBehaviour
     public float CardHeight;
     public Animator animator;
     public string exitAnimationTag;
+    public MMF_Player Feedback_spawn;
+    public MMF_Player Feedback_exit;
 
     public void Init(CardTypes cardType, Material material)
     {
@@ -30,5 +33,13 @@ public class Card : MonoBehaviour
     {
         animator.enabled = true;
         animator.Play(exitAnimationTag+pos);
+    }
+
+    public void PlayFeedback_spawn()
+    {
+        if(Feedback_spawn!= null)
+        {
+            Feedback_spawn.PlayFeedbacks();
+        }
     }
 }

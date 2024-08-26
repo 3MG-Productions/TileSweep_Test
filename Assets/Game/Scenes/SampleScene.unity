@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.18198666, g: 0.22767381, b: 0.30740753, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -169,9 +169,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevelConfig: {fileID: 11400000, guid: 9bd22fe68afb8964db26b0585b617c63, type: 2}
   tag_cards: CARD
+  Spawner: 1
   cardSpawnerPrefab: {fileID: -6156740622798062675, guid: ff9b2b1cb4feacf44bcd3835157f98d5, type: 3}
   spawnPosition: {x: 0, y: 0, z: -15}
   spawnOffset: 3.8
+  CollectionPoint: 1
   collectionPointPrefab: {fileID: 1084328154017290264, guid: 523cd69aaae023647a9aa6a895f9010d, type: 3}
   collectionPosition: {x: 0, y: 0, z: -9}
   collectionOffset: 3.2

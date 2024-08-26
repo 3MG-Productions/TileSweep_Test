@@ -62,7 +62,7 @@ public class CollectionSystem : MonoBehaviour
                     Card cardToMove = cardSpawner.Card;
 
                     cardSpawner.Card = null;
-                    vacantPoint.Card = cardToMove;
+                    vacantPoint.AddCard(cardToMove);
 
                     // cardToMove.transform.DOMove(vacantPoint.transform.position, moveDuration);
                     // cardToMove.transform.DORotate(cardToMove.transform.eulerAngles + rotationOffset, moveDuration);
@@ -124,7 +124,7 @@ public class CollectionSystem : MonoBehaviour
                                 {
                                     int lowestIndex = vacantIndices[vacantIndices.Count - 1];
 
-                                    collectionPoints[lowestIndex].Card = card;
+                                    collectionPoints[lowestIndex].AddCard(card);
 
                                     deck.Cards.Remove(card);
 
@@ -181,7 +181,7 @@ public class CollectionSystem : MonoBehaviour
         {
             if(i < availableCards.Count)
             {
-                collectionPoints[i].Card = availableCards[i];
+                collectionPoints[i].AddCard(availableCards[i]);
 
                 collectionPoints[i].Card.transform.SetParent(collectionPoints[i].transform);
 
@@ -192,7 +192,7 @@ public class CollectionSystem : MonoBehaviour
             }
             else
             {
-                collectionPoints[i].Card = null;
+                collectionPoints[i].AddCard(null);
             }
         }
 
@@ -265,7 +265,7 @@ public class CollectionSystem : MonoBehaviour
 
                     cardsToRemove.Add(card);
                     deletedCount++;
-                    Ccard.Point.Card = null;
+                    Ccard.Point.AddCard(null);
 
                     card.PlayExitAnimation(deletedCount);
 
