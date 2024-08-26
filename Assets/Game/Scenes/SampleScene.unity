@@ -830,6 +830,7 @@ MonoBehaviour:
   rotationOffset: {x: 0, y: 0, z: 0}
   VanishingPoint: {fileID: 407203719}
   cardVanishDelay: 0.8
+  onlyCollectMatches: 1
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
