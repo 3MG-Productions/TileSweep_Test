@@ -14,6 +14,7 @@ public class CollectionSystem : MonoBehaviour
     [SerializeField] private Vector3 rotationOffset = new Vector3(180, 0, 0);
     [SerializeField] private Transform VanishingPoint;
     [SerializeField] private float cardVanishDelay = 0.8f;
+    [SerializeField] private bool onlyCollectMatches = false;
 
     public bool IsMatchingInProgress { get; private set; }
 
@@ -90,11 +91,22 @@ public class CollectionSystem : MonoBehaviour
     {
         List<int> vacantIndices = new List<int>();
 
+        Dictionary<CardTypes, List<Card>> similarCards = new Dictionary<CardTypes, List<Card>>();
+
         for(int i = collectionPoints.Count - 1; i >= 0; i--)
         {
             if(collectionPoints[i].Card == null)
             {
                 vacantIndices.Add(i);
+            }
+            else
+            {
+                if(!similarCards.ContainsKey(collectionPoints[i].Card.CardType))
+                {
+                    similarCards.Add(collectionPoints[i].Card.CardType, new List<Card>());
+                }
+
+                similarCards[collectionPoints[i].Card.CardType].Add(collectionPoints[i].Card);
             }
         }
 
@@ -106,6 +118,11 @@ public class CollectionSystem : MonoBehaviour
             {
                 CardTypes cardTypeToCollect = collectionPoints[c].Card.CardType;
 
+                if(onlyCollectMatches && similarCards.ContainsKey(cardTypeToCollect) && similarCards[cardTypeToCollect].Count >= 3)
+                {
+                    continue;
+                }
+
                 for(int i = 0; i < decks.GetLength(0); i++)
                 {
                     for(int j = 0; j < decks[i].GetLength(0); j++)
@@ -116,8 +133,12 @@ public class CollectionSystem : MonoBehaviour
                         {
                             Card card = deck.Cards[k];
 
-                            if(card.CardType == cardTypeToCollect)
+                            if(card.CardType == cardTypeToCollect )
                             {
+                                if(onlyCollectMatches && similarCards.ContainsKey(card.CardType) && similarCards[card.CardType].Count >= 3)
+                                {
+                                    continue;
+                                }
                                 // yield return new WaitForSeconds(0.1f);
 
                                 if(vacantIndices.Count > 0)
@@ -141,6 +162,8 @@ public class CollectionSystem : MonoBehaviour
                                     // yield return new WaitForSeconds(moveDuration + 0.1f);
 
                                     vacantIndices.Remove(lowestIndex);
+
+                                    similarCards[cardTypeToCollect].Add(card);
                                 }
                             }
                             else

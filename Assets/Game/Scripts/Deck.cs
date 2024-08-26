@@ -23,7 +23,6 @@ public class Deck : MonoBehaviour
             card.transform.SetParent(transform);
 
             card.transform.localPosition = position;
-            position.z += 0.2f;
             position.y += card.CardHeight;
         }
 

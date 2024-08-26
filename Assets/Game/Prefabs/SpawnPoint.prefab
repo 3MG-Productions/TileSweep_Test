@@ -70,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Card: {fileID: 0}
   Feedback_newSpawn: {fileID: 6533695708866822557}
+  cardsInQueue: []
 --- !u!1 &2186185736901279245
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,6 +369,10 @@ PrefabInstance:
     - target: {fileID: 292414555684947802, guid: 3e78baefea863574880b4c8462207fd4, type: 3}
       propertyPath: m_Name
       value: Base
+      objectReference: {fileID: 0}
+    - target: {fileID: 292414555684947802, guid: 3e78baefea863574880b4c8462207fd4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6935371074460152980, guid: 3e78baefea863574880b4c8462207fd4, type: 3}
       propertyPath: m_LocalPosition.x
