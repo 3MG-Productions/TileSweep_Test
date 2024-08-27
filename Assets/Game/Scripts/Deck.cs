@@ -20,7 +20,7 @@ public class Deck : MonoBehaviour
 
         Vector3 position = Vector3.zero;
 
-        foreach (Card card in cards)
+        foreach (Card card in Cards)
         {
             card.gameObject.SetActive(true);
 

@@ -16,6 +16,9 @@ public class CollectionSystem : MonoBehaviour
     [SerializeField] private float cardVanishDelay = 0.8f;
     [SerializeField] private bool onlyCollectMatches = false;
     [SerializeField] private bool autoPlay = false;
+    [SerializeField] private bool cardJumps = true;
+    [SerializeField] private float cardJumpPower = 15f;
+    [SerializeField] private float cardJumpDuration = 0.5f;
 
     public bool IsMatchingInProgress { get; private set; }
 
@@ -264,11 +267,20 @@ public class CollectionSystem : MonoBehaviour
             yield return new WaitForSeconds(moveDuration + 0.1f);
 
         if(cardsAnimationOrder != null)
-        foreach (Card card in cardsAnimationOrder)
         {
-            card.transform.DOLocalMove(Vector3.zero, moveDuration);
-
-            yield return new WaitForSeconds(moveDuration + 0.1f);
+            foreach (Card card in cardsAnimationOrder)
+            {
+                if(cardJumps)
+                {
+                    card.transform.DOLocalJump(Vector3.zero,cardJumpPower,1, cardJumpDuration);
+                    yield return new WaitForSeconds(cardJumpDuration + 0.1f);
+                }
+                else
+                {
+                    card.transform.DOLocalMove(Vector3.zero, moveDuration);
+                    yield return new WaitForSeconds(moveDuration + 0.1f);
+                }
+            }
         }
     }
 
@@ -317,12 +329,15 @@ public class CollectionSystem : MonoBehaviour
                     deletedCount++;
                     Ccard.Point.AddCard(null);
 
-                    card.PlayExitAnimation(deletedCount);
+                    // card.PlayExitAnimation(deletedCount);
+                    card.transform.DOMoveY(5f, 0.2f);
 
                     if(deletedCount == matchCount)
                     {
                         break;
                     }
+
+                    yield return new WaitForSeconds(0.05f);
                 }
 
                 // Sequence sequence = DOTween.Sequence();

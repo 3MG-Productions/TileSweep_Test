@@ -1,3 +1,4 @@
+using DG.Tweening;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
@@ -31,8 +32,13 @@ public class Card : MonoBehaviour
     /// <param name="pos"></param>
     public void PlayExitAnimation(int pos)
     {
-        animator.enabled = true;
-        animator.Play(exitAnimationTag+pos);
+        transform.DOMoveY(5f, 0.25f).SetDelay(pos * 0.05f);
+    }
+
+    private void DestroyGO()
+    {
+        DOTween.KillAll(transform);
+        Destroy(gameObject);
     }
 
     public void PlayFeedback_spawn()
